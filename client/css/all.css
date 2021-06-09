@@ -1,0 +1,143 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    /*background-color: #444;*/
+    background-color: #fff;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin: 0;
+}
+
+#wrapper {
+    overflow: hidden;
+}
+
+#wrapper #bg {
+    /*
+    background: rgb(255, 255, 255);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 60%, rgba(85, 85, 85, 1) 100%);
+    border-bottom: 3em dashed #000;
+    border-top: 3em dashed #000;
+    margin: 3em -3em;
+    padding: 10em 3em 4em 3em;
+    width: 110%;
+    transform: rotate(5deg);*/
+}
+
+#logo {
+    font-family: 'Metamorphous', Helvetica, Arial, sans-serif;
+    font-size: 4em;
+    float: left;
+    margin-left: -0.55em;
+    margin-top: -4.25em;
+    white-space: nowrap;
+}
+
+a #logo,
+a:visited #logo,
+a:hover #logo {
+    color: #000;
+}
+
+h1 {
+    font-family: 'Metamorphous', Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+h2 {
+    font-family: 'Metamorphous', Helvetica, Arial, sans-serif;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+a {
+    color: darkgoldenrod;
+}
+
+a:visited {
+    color: #829100;
+}
+
+a:hover {
+    color: #f66;
+}
+
+nav {
+    background-color: rgba(85, 85, 85, 0.85);
+    margin-bottom: 4em;
+    margin-left: 6em;
+    padding: 0;
+}
+
+nav ul {
+    border-bottom: 5px dashed black;
+    border-top: 5px dashed black;
+    list-style-type: none;
+    margin: 0;
+    padding: 1em;
+    padding-left: 0;
+}
+
+nav ul li {
+    border-right: 3px solid black;
+    display: inline;
+    padding: 1.2em;
+}
+
+nav ul li a {
+    text-shadow: 2px 2px #444;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 1em;
+    text-decoration: none;
+}
+
+nav ul li a:visited {
+    color: #ddd;
+}
+
+nav ul li a:hover {
+    color: yellow;
+    text-shadow: 0 0 #fff;
+}
+
+header {
+    margin-left: 9em;
+    margin-right: 8em;
+}
+
+main {
+    margin-bottom: 6em;
+    overflow: auto;
+    margin-left: 11em;
+    margin-right: 8em;
+}
+
+
+/*
+nav,
+header,
+main {
+    transform: rotate(-5deg);
+}*/
+
+@media only screen and (max-width: 1024px) {
+    header,
+    main {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+}
+
+@media only all and (max-width: 768px) {
+    header,
+    main {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+}

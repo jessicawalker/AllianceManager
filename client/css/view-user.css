@@ -1,0 +1,89 @@
+/* Primarily used on: /view-movies */
+
+#viewMoviesApp {
+    line-height: 2em;
+}
+
+#viewMoviesApp div label:first-of-type {
+    font-weight: bold;
+}
+
+#viewMoviesApp button {
+    background-color: #777;
+    border: 2px dashed #000;
+    border-radius: 2em;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-right: 0.75em;
+    padding: 0.5em 1em;
+    text-shadow: 2px 2px #222;
+}
+
+#viewMoviesApp button:hover {
+    background-color: darkgoldenrod;
+    cursor: pointer;
+}
+
+table {
+    background-color: #fff;
+    border-collapse: collapse;
+    margin: 20px 20px 20px 0;
+    padding: 20px;
+    line-height: 18px;
+}
+
+thead {
+    background-color: yellow;
+}
+
+td,
+th {
+    padding: 8px 12px;
+    border-bottom: 1px solid darkgoldenrod;
+}
+
+tr:nth-of-type(even) {
+    background-color: lightyellow;
+}
+
+td:nth-of-type(2),
+td:nth-of-type(4),
+td:nth-of-type(6) {
+    text-align: center;
+}
+
+th:nth-of-type(7),
+td:nth-of-type(7) {
+    padding-right: 30px;
+}
+
+tr:hover {
+    background-color: yellow;
+}
+
+th:hover {
+    cursor: pointer;
+}
+
+.delete_button button {
+    background-color: #c00;
+    border: 1px solid #555;
+    color: #fff;
+    font-size: 0.66em;
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+.delete_button button:hover {
+    cursor: pointer;
+}
+
+tr {
+    transition: 400ms;
+}
+
+tr.removeRow {
+    transform: scaleY(0);
+}

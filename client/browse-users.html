@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>User Data: Evertale | Visunu Gaming</title>
+
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/client/js/config.js"></script>
+    <script src="/client/js/browse-users.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/client/css/all.css">
+    <link rel="stylesheet" href="/client/css/browse-users.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Metamorphous&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <div id="bg">
+            <!--
+            <nav id="router_button">
+                <ul>
+                    <li><a href="/client/" id="home-router">Home</a></li>
+                    <li><a href="/client/browse-users.html" id="browse-router">Browse Users</a></li>
+                    <li><a href="/client/view-user.html" id="view-router">View User</a></li>
+                    <li><a href="/client/write-data.html" id="write-router">Add User Data</a></li>
+                </ul>
+            </nav>-->
+
+            <header>
+                <a href="/client/">
+                    <div id="logo">Evertale | Visunu Gaming</div>
+                </a>
+                <h1>Visunu Gaming User Data | Evertale</h1>
+            </header>
+
+            <main id="browseUserdataApp" data-ng-app="userdataTableApp" data-ng-controller="userdataTableController">
+
+                <section>
+                    <div class="filters" id="filterDate">
+                        <label for="groupByDate">Date: </label>
+                        <select id="groupByDate" data-ng-model="selectedDate" data-ng-options="date.display for date in dates" data-ng-change="redrawTable()"></select>
+                    </div>
+                    <div class="filters" id="filterUser">
+                        <label for="groupByUser">User: </label>
+                        <select id="groupByUser" data-ng-model="selectedUser" data-ng-options="user.display for user in users" data-ng-change="redrawTable()"></select>
+                    </div>
+                    <div class="filters" id="filterSort">
+                        <label for="sortBy">Sort By: </label>
+                        <select id="sortBy" data-ng-model="selectedSortBy" data-ng-options="field.display for field in sortBy" data-ng-change="redrawTable()"></select>
+                    </div>
+
+                    <div id="moreOptions">View More Options &#9660;</div>
+                    <div id="viewOptions">
+                        <div class="filters" id="filterClaimed">
+                            <label for="groupByClaimed">Claimed SS - War: </label>
+                            <select id="groupByClaimed" data-ng-model="selectedClaimed" data-ng-options="boolean.display for boolean in tOrF" data-ng-change="redrawTable()"></select>
+                        </div>
+                        <div class="filters" id="filterActiveDeclare">
+                            <label for="groupByActiveDeclare">Active - Declare Phase: </label>
+                            <select id="groupByActiveDeclare" data-ng-model="selectedActiveDeclare" data-ng-options="boolean.display for boolean in tOrF" data-ng-change="redrawTable()"></select>
+                        </div>
+                        <div class="filters" id="filterDefenseEarly">
+                            <label for="groupByDefenseEarly">Placed Defense - Early: </label>
+                            <select id="groupByDefenseEarly" data-ng-model="selectedDefenseEarly" data-ng-options="boolean.display for boolean in tOrF" data-ng-change="redrawTable()"></select>
+                        </div>
+                        <div class="filters" id="filterDefenseLive">
+                            <label for="groupByDefenseLive">Placed Defense - Live: </label>
+                            <select id="groupByDefenseLive" data-ng-model="selectedDefenseLive" data-ng-options="boolean.display for boolean in tOrF" data-ng-change="redrawTable()"></select>
+                        </div>
+                        <div class="filters" id="filterOffense">
+                            <label for="groupByOffense">Offense: </label>
+                            <select id="groupByOffense" data-ng-model="selectedOffense" data-ng-options="boolean.display for boolean in tOrF" data-ng-change="redrawTable()"></select>
+                        </div>
+                    </div>
+
+                    <button id="filterReset" data-ng-click="get_users()">Reset Filters</button>
+
+                    <div class="data-display">
+                        <div>
+                            <h2 data-ng-if="selectedDate.value != ''">{{ selectedDate.display }}</h2>
+                            <h2 data-ng-if="selectedUser.value != ''">{{ selectedUser.display }}</h2>
+                        </div>
+                        <table id="userdataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <th class="date" data-ng-if="selectedDate.value == ''">Date</th>
+                                    <th class="user" data-ng-if="selectedUser.value == ''">User</th>
+                                    <th>Claimed SS <br>War</th>
+                                    <th>Active <br>Declare Phase</th>
+                                    <th>Placed <br>Defense Early</th>
+                                    <th>Placed <br>Defense Live</th>
+                                    <th>Place Offense</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="userentry in userdata">
+                                    <td class="date" data-ng-if="selectedDate.value == ''">{{ userentry.date | date:"EEE, MMM d, y" }}</td>
+                                    <td class="user" data-ng-if="selectedUser.value == ''">{{ userentry.user }}</td>
+                                    <td class="{{ userentry.claimedSSWar }}">{{ userentry.claimedSSWar }}</td>
+                                    <td class="{{ userentry.activeDeclare }}">{{ userentry.activeDeclare }}</td>
+                                    <td class="{{ userentry.defenseEarly }}">{{ userentry.defenseEarly }}</td>
+                                    <td class="{{ userentry.defenseLive }}">{{ userentry.defenseLive }}</td>
+                                    <td class="{{ userentry.offense }}">{{ userentry.offense }}</td>
+                                    <td>{{ userentry.notes }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </section>
+            </main>
+        </div>
+    </div>
+
+</body>
+
+</html>
