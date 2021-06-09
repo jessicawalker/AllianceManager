@@ -1,2 +1,2 @@
-//var evgURL = "https://evertale-visunu.herokuapp.com"; // Deploy
-var evgURL = "http://localhost:1100"; // Dev - Comment before deploy to GitHub
+//var evgURL = "https://CHANGENAME.herokuapp.com"; // Deploy
+var evgURL = "http://localhost:296"; // Dev - Comment before deploy to GitHub
