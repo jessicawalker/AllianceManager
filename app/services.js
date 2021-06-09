@@ -22,7 +22,7 @@ var services = function(app) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
-                var dbo = client.db("evertale-visunu");
+                var dbo = client.db("alliancemgr");
 
                 dbo.collection("userdata").insertOne(newUserEntry, function(err, response) {
                     if (err) {
@@ -44,7 +44,7 @@ var services = function(app) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
-                var dbo = client.db("evertale-visunu");
+                var dbo = client.db("alliancemgr");
 
                 dbo.collection("userdata").find().sort(sortBy).toArray(function(err, data) {
                     if (err) {
@@ -147,7 +147,7 @@ var services = function(app) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
-                var dbo = client.db("evertale-visunu");
+                var dbo = client.db("alliancemgr");
 
                 dbo.collection("userdata").find({ $and: [searchDate, searchUser, claimedSSWar, activeDeclare, defenseEarly, defenseLive, offense] }).sort(sortBy).toArray(function(err, data) {
                     if (err) {
@@ -202,7 +202,7 @@ var services = function(app) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
-                var dbo = client.db("evertale-visunu");
+                var dbo = client.db("alliancemgr");
 
                 dbo.collection("userdata").find(search).sort(sortBy).toArray(function(err, data) {
                     if (err) {
@@ -228,7 +228,7 @@ var services = function(app) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
-                var dbo = client.db("evertale-visunu");
+                var dbo = client.db("alliancemgr");
 
                 dbo.collection("userdata").deleteOne(search, function(err, response) {
                     if (err) {
@@ -275,7 +275,7 @@ var services = function(app) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
-                var dbo = client.db("evertale-visunu");
+                var dbo = client.db("alliancemgr");
 
                 dbo.collection("userdata").updateOne(search, updateData, function(err, response) {
                     if (err) {
