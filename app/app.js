@@ -16,7 +16,7 @@ app.use("/client", express.static(clientPath));
 
 // Make the server
 var server;
-var port = process.env.PORT || process.env.NODE_PORT || 1100;
+var port = process.env.PORT || process.env.NODE_PORT || 296;
 
 // Router listeners
 var router = require("./router.js");
