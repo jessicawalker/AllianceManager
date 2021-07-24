@@ -5,17 +5,13 @@ const dbURL = process.env.DB_URI || "mongodb://localhost";
 
 // Service listeners
 var services = function(app) {
-    app.post("/write-record", function(req, res) {
 
-        var newUserEntry = {
-            date: req.body.date,
-            user: req.body.user,
-            claimedSSWar: req.body.claimedSSWar,
-            activeDeclare: req.body.activeDeclare,
-            defenseEarly: req.body.defenseEarly,
-            defenseLive: req.body.defenseLive,
-            offense: req.body.offense,
-            notes: req.body.notes
+    // WRITE
+    app.post("/allianceprofile-add", function(req, res) {
+
+        var newAllianceEntry = {
+            alliance_name: req.body.alliance_name,
+            game_name: req.body.game_name
         };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
@@ -24,7 +20,7 @@ var services = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdata").insertOne(newUserEntry, function(err, response) {
+                dbo.collection("allianceprofile").insertOne(newAllianceEntry, function(err, response) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -37,6 +33,7 @@ var services = function(app) {
         });
     });
 
+    // READ
     app.get("/read-records", function(req, res) {
         var sortBy = { date: -1, _id: 1 }; // go back to default sort
 
@@ -232,6 +229,44 @@ var services = function(app) {
 
                 dbo.collection("userdata").deleteOne(search, function(err, response) {
                     if (err) {
+                        return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
+                    } else {
+                        client.close();
+                        return res.status(200).send(JSON.stringify({ msg: "SUCCESS" }));
+                    }
+                });
+            }
+        });
+    });
+    
+    // UPDATE
+
+    app.put("/allianceprofile-update/:id", function(req, res) {
+        console.log("Begin update");
+        var allianceID = req.params.id;
+        var alliance_name = req.body.alliance_name;
+        var game_name = req.body.game_name;
+
+        var s_id = new ObjectId(allianceID);
+
+        var search = { _id: s_id };
+
+        var updateData = {
+            $set: {
+                alliance_name: alliance_name,
+                game_name: game_name
+            }
+        };
+
+        MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+            if (err) {
+                return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
+            } else {
+                var dbo = client.db("alliancemgr");
+
+                dbo.collection("allianceprofile").updateOne(search, updateData, function(err, response) {
+                    if (err) {
+                        client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
                     } else {
                         client.close();
