@@ -2,33 +2,15 @@ const path = require("path");
 //const clientPath = path.resolve(__dirname + "/../client");
 const express = require('express');
 const router = express.Router();
-const AllianceProfile = require('./allianceprofile');
-const Members = require('./members');
-const TrackingCriteria = require('./trackingcriteria');
+const AllianceProfile = require('./schema/allianceprofile');
+const Members = require('./schema/members');
+const TrackingCriteria = require('./schema/trackingcriteria');
 
 // Router listeners
 var routes = function (app) {
     app.get('/allianceprofile', paginatedResults(AllianceProfile), (req, res) => {
         res.json(res.paginatedResults);
     });
-    /*app.put('/allianceprofile/update', (req, res) => {
-        console.log(req);
-        res.json(res.paginatedResults);
-    });*/
-    /*app.put('/allianceprofile/update', getAlliance, async (req, res) => {
-        if (req.body.alliance_name != null) {
-            res.allianceprofile.alliance_name = req.body.alliance_name;
-        }
-        if (req.body.subscribedToChannel != null) {
-            res.allianceprofile.game_name = req.body.game_name;
-        }
-        try {
-            const updatedAlliance = await res.allianceprofile.save();
-            res.json(updatedAlliance)
-        } catch (err) {
-            res.status(400).json({ message: err.message });
-        }
-    });*/
     app.get('/members', paginatedResults(Members), (req, res) => {
         res.json(res.paginatedResults);
     });
@@ -84,5 +66,24 @@ function paginatedResults(model) {
     };
 }
 
+
+    /*app.put('/allianceprofile/update', (req, res) => {
+        console.log(req);
+        res.json(res.paginatedResults);
+    });*/
+    /*app.put('/allianceprofile/update', getAlliance, async (req, res) => {
+        if (req.body.alliance_name != null) {
+            res.allianceprofile.alliance_name = req.body.alliance_name;
+        }
+        if (req.body.subscribedToChannel != null) {
+            res.allianceprofile.game_name = req.body.game_name;
+        }
+        try {
+            const updatedAlliance = await res.allianceprofile.save();
+            res.json(updatedAlliance)
+        } catch (err) {
+            res.status(400).json({ message: err.message });
+        }
+    });*/
 
 module.exports = routes;

@@ -29,7 +29,7 @@ var routes = require("./routes.js");
 routes(app);
 
 // Service listeners
-var services = require("./services.js");
+var services = require("./services/services.js");
 services(app);
 
 
@@ -39,5 +39,5 @@ server = app.listen(port, function(err) {
         throw err;
     }
     var timestamp = new Date(Date.now());
-    console.log("Listening on port " + port + "\n" + timestamp.toUTCString());
+    console.log("Listening on port " + port + "\n" + timestamp.toString());
 });

@@ -2,10 +2,16 @@ const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
 
 const dbURL = process.env.DB_URI || "mongodb://localhost";
+const AllianceProfile = require('./allianceprofile');
+const Members = require('./members');
+const TrackingCriteria = require('./trackingcriteria');
 
 // Service listeners
 var services = function(app) {
-
+    AllianceProfile(app);
+    Members(app);
+    TrackingCriteria(app);
+/*
     // WRITE
     app.post("/allianceprofile-add", function(req, res) {
 
@@ -35,11 +41,13 @@ var services = function(app) {
 
     app.post("/members-add", function(req, res) {
 
+        var addTimestamp = new Date(Date.now());
         var newMemberEntry = {
             member_username: req.body.member_username,
             member_role: req.body.member_role,
             member_notes: req.body.member_note,
-            current_member: req.body.current_member
+            current_member: req.body.current_member,
+            member_added_date: addTimestamp.toUTCString()
         };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
@@ -316,7 +324,7 @@ var services = function(app) {
             }
         });
     });
-    
+
     // UPDATE
 
     app.put("/allianceprofile-update/:id", function(req, res) {
@@ -479,7 +487,7 @@ var services = function(app) {
                 });
             }
         });
-    });
+    });*/
 };
 
 module.exports = services;
