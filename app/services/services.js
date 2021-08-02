@@ -5,12 +5,14 @@ const dbURL = process.env.DB_URI || "mongodb://localhost";
 const AllianceProfile = require('./allianceprofile');
 const Members = require('./members');
 const TrackingCriteria = require('./trackingcriteria');
+const Userdata = require('./userdata');
 
 // Service listeners
 var services = function(app) {
     AllianceProfile(app);
     Members(app);
     TrackingCriteria(app);
+    Userdata(app);
 /*
     // WRITE
     app.post("/allianceprofile-add", function(req, res) {

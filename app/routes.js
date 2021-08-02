@@ -5,6 +5,7 @@ const router = express.Router();
 const AllianceProfile = require('./schema/allianceprofile');
 const Members = require('./schema/members');
 const TrackingCriteria = require('./schema/trackingcriteria');
+const Userdata = require('./schema/userdata');
 
 // Router listeners
 var routes = function (app) {
@@ -15,6 +16,9 @@ var routes = function (app) {
         res.json(res.paginatedResults);
     });
     app.get('/trackingcriteria', paginatedResults(TrackingCriteria), (req, res) => {
+        res.json(res.paginatedResults);
+    });
+    app.get('/userdata', paginatedResults(Userdata), (req, res) => {
         res.json(res.paginatedResults);
     });
 };
@@ -57,8 +61,6 @@ function paginatedResults(model) {
         try {
             results.results = await model.find().limit(limit).skip(startIndex).exec();
             res.paginatedResults = results;
-            //console.log(results);
-            //console.log(model.find());
             next();
         } catch (e) {
             res.status(500).json({ message: e.message });
