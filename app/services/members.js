@@ -7,7 +7,9 @@ const dbURL = process.env.DB_URI || "mongodb://localhost";
 var membersServices = function(app) {
 
     // READ
-    app.get("/members", function(req, res) {
+    
+    app.get("/members-all", function(req, res) {
+        const projection = { _id: 0, member_username: 1 };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {
@@ -15,7 +17,7 @@ var membersServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("members").find().toArray(function(err, data) {
+                dbo.collection("members").find().project(projection).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -27,16 +29,19 @@ var membersServices = function(app) {
             }
         });
     });
-/*
+
     app.get("/members-current", function(req, res) {
 
+        const projection = { _id: 0, member_username: 1 };
+
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("members").find({current_member: true}).toArray(function(err, data) {
+                dbo.collection("members").find({current_member: true}).project(projection).toArray(function(err, data) {
+                //dbo.collection("members").find({current_member: true}).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -48,7 +53,7 @@ var membersServices = function(app) {
             }
         });
     });
-*/
+
 
     // WRITE
     app.post("/members-add", function(req, res) {

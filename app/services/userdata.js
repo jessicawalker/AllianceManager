@@ -4,6 +4,7 @@ const ObjectId = require("mongodb").ObjectId;
 const dbURL = process.env.DB_URI || "mongodb://localhost";
 
 // Service listeners
+// === ALL DB REFERENCES GO TO USERDATATEST - change to userdata when ready ===
 var userdataServices = function(app) {
 
     // READ
@@ -15,7 +16,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdata").find().toArray(function(err, data) {
+                dbo.collection("userdatatest").find().toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -32,15 +33,7 @@ var userdataServices = function(app) {
     // WRITE
     app.post("/userdata-add", function(req, res) {
 
-        // update fields
-        var addTimestamp = new Date(Date.now());
-        var newUserdataEntry = {
-            member_username: req.body.member_username,
-            member_role: req.body.member_role,
-            member_notes: req.body.member_notes,
-            current_member: req.body.current_member,
-            member_added_date: addTimestamp.toUTCString()
-        };
+        var newUserdataEntry = req.body.addMemberEntry;
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {
@@ -48,7 +41,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdata").insertOne(newUserdataEntry, function(err, response) {
+                dbo.collection("userdatatest").insertOne(newUserdataEntry, function(err, response) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -74,7 +67,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdata").deleteOne(search, function(err, response) {
+                dbo.collection("userdatatest").deleteOne(search, function(err, response) {
                     if (err) {
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
                     } else {
@@ -115,7 +108,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdata").updateOne(search, updateData, function(err, response) {
+                dbo.collection("userdatatest").updateOne(search, updateData, function(err, response) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
