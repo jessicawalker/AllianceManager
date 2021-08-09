@@ -7,8 +7,36 @@ const dbURL = process.env.DB_URI || "mongodb://localhost";
 var membersServices = function(app) {
 
     // READ
+    /*app.get("/members", function(req, res) {
+
+        MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+            if (err) {
+                return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
+            } else {
+                var dbo = client.db("alliancemgr");
+
+                dbo.collection("members").find().toArray(function(err, data) {
+                    if (err) {
+                        client.close();
+                        return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
+                    } else {
+                        client.close();
+                        return res.status(200).send(JSON.stringify({ msg: "SUCCESS", members: data }));
+                    }
+                });
+            }
+        });
+    });*/
     
     app.get("/members-all", function(req, res) {
+        //var current_member = req.params.current_member;
+        //var search = {};
+        //var search = (current_member === "") ? {} : { current_member: current_member };
+        //console.log(req.params.current_member);
+        //console.log(current_member);
+        //console.log(search);
+
+        
         const projection = { _id: 0, member_username: 1 };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {

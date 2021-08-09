@@ -39,6 +39,12 @@ function paginatedResults(model) {
     return async (req, res, next) => {
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
+        const date = req.query.date;
+        var searchDate = (date === "") ? {} : { date: new Date(date) };
+        //var search = (date === "") ? {} : { date: new Date(date) };
+        //console.log(req.query.date);
+        //console.log(date);
+        //console.log(searchDate);
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
@@ -60,6 +66,7 @@ function paginatedResults(model) {
 
         try {
             results.results = await model.find().limit(limit).skip(startIndex).exec();
+            //results.results = await model.find({ $and: [searchDate] }).limit(limit).skip(startIndex).exec();
             res.paginatedResults = results;
             next();
         } catch (e) {
@@ -67,6 +74,8 @@ function paginatedResults(model) {
         }
     };
 }
+
+
 
 
     /*app.put('/allianceprofile/update', (req, res) => {
