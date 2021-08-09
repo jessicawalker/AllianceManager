@@ -34,12 +34,9 @@ var userdataServices = function(app) {
     app.get("/userdata-filter", function(req, res) {
         var date = req.query.date;
         var dateFormatted =  new Date(req.query.date).toISOString();
-        console.log("req.query: " + req.query);
-        console.log("date: " + date);
         //var search = (date === "") ? {} : { date: new Date(date).toISOString() };
         var search = (date === "") ? {} : { date: dateFormatted };
         //var search = (date === "") ? {} : { date: date };
-        console.log("search: " + JSON.stringify(search));
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {
@@ -65,9 +62,6 @@ var userdataServices = function(app) {
     app.post("/userdata-add", function(req, res) {
 
         var newUserdataEntry = req.body.addMemberEntry;
-        console.log(req.body);
-        console.log(req.body.addMemberEntry);
-        console.log(newUserdataEntry);
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {

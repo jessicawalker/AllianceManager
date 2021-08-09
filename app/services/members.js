@@ -29,14 +29,6 @@ var membersServices = function(app) {
     });*/
     
     app.get("/members-all", function(req, res) {
-        //var current_member = req.params.current_member;
-        //var search = {};
-        //var search = (current_member === "") ? {} : { current_member: current_member };
-        //console.log(req.params.current_member);
-        //console.log(current_member);
-        //console.log(search);
-
-        
         const projection = { _id: 0, member_username: 1 };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
@@ -69,7 +61,6 @@ var membersServices = function(app) {
                 var dbo = client.db("alliancemgr");
 
                 dbo.collection("members").find({current_member: true}).project(projection).toArray(function(err, data) {
-                //dbo.collection("members").find({current_member: true}).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
