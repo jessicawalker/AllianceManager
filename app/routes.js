@@ -21,6 +21,9 @@ var routes = function (app) {
     app.get('/userdata', paginatedResults(Userdata), (req, res) => {
         res.json(res.paginatedResults);
     });
+    app.get('/userdata-unique', uniqueResults(Userdata), (req, res) => {
+        res.json(res.uniqueResults);
+    });
 };
 
 async function getAlliance(req, res, next) {
@@ -50,6 +53,7 @@ function paginatedResults(model) {
         const endIndex = page * limit;
 
         const results = {};
+        const sortBy = { date: -1, _id: 1 };
 
         if (endIndex < await model.countDocuments().exec()) {
             results.next = {
@@ -65,7 +69,7 @@ function paginatedResults(model) {
         }
 
         try {
-            results.results = await model.find().limit(limit).skip(startIndex).exec();
+            results.results = await model.find().sort(sortBy).limit(limit).skip(startIndex).exec();
             //results.results = await model.find({ $and: [searchDate] }).limit(limit).skip(startIndex).exec();
             res.paginatedResults = results;
             next();
@@ -75,6 +79,21 @@ function paginatedResults(model) {
     };
 }
 
+
+function uniqueResults(model) {
+    return async (req, res, next) => {
+        const unique = req.query.unique;
+        const results = {};
+
+        try {
+            results.results = await model.distinct(unique).exec();
+            res.uniqueResults = results;
+            next();
+        } catch (e) {
+            res.status(500).json({ message: e.message });
+        }
+    };
+}
 
 
 

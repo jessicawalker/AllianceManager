@@ -30,6 +30,7 @@ var membersServices = function(app) {
     
     app.get("/members-all", function(req, res) {
         const projection = { _id: 0, member_username: 1 };
+        var sortByName = { member_username: 1 };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {
@@ -37,7 +38,7 @@ var membersServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("members").find().project(projection).toArray(function(err, data) {
+                dbo.collection("members").find().project(projection).sort(sortByName).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -53,6 +54,7 @@ var membersServices = function(app) {
     app.get("/members-current", function(req, res) {
 
         const projection = { _id: 0, member_username: 1 };
+        var sortByName = { member_username: 1 };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {
@@ -60,7 +62,7 @@ var membersServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("members").find({current_member: true}).project(projection).toArray(function(err, data) {
+                dbo.collection("members").find({current_member: true}).project(projection).sort(sortByName).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));

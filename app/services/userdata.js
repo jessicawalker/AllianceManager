@@ -57,7 +57,6 @@ var userdataServices = function(app) {
         });
     });
 
-
     // WRITE
     app.post("/userdata-add", function(req, res) {
 
@@ -68,7 +67,7 @@ var userdataServices = function(app) {
                 return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
             } else {
                 var dbo = client.db("alliancemgr");
-
+                
                 dbo.collection("userdatatest").insertOne(newUserdataEntry, function(err, response) {
                     if (err) {
                         client.close();
@@ -110,21 +109,13 @@ var userdataServices = function(app) {
     // UPDATE
     app.put("/userdata-update/:id", function(req, res) {
 
-        // update fields
-        var fieldName = req.body.fieldName;
-        var trackData = req.body.trackData;
-        var userdataID = req.query.id;
+        var userdataID = req.params.id;
         var s_id = new ObjectId(userdataID);
         var search = { _id: s_id };
 
-        var updateObj = {};
-        updateObj[fieldName] = trackData;
-
+        // update fields
         var updateData = {
-            $set: {
-                updateObj
-                //fieldName: trackData
-            }
+            $set: req.body             
         };
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
