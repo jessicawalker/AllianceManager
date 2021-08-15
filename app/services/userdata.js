@@ -7,6 +7,38 @@ const dbURL = process.env.DB_URI || "mongodb://localhost";
 // === ALL DB REFERENCES GO TO USERDATATEST - change to userdata when ready ===
 var userdataServices = function(app) {
 
+    // READ - no pagination
+    
+    app.get("/userdata-filter", function(req, res) {
+        var date = req.query.date;
+        var dateFormatted =  new Date(req.query.date).toISOString();
+        //var search = (date === "") ? {} : { date: new Date(date).toISOString() };
+        var search = (date === "") ? {} : { date: dateFormatted };
+        //var search = (date === "") ? {} : { date: date };
+
+        console.log(req.query.date);
+        console.log(dateFormatted);
+        console.log(search);
+
+        MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+            if (err) {
+                return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
+            } else {
+                var dbo = client.db("alliancemgr");
+
+                dbo.collection("userdatatest").find(search).toArray(function(err, data) {
+                    if (err) {
+                        client.close();
+                        return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
+                    } else {
+                        client.close();
+                        return res.status(200).send(JSON.stringify({ msg: "SUCCESS", results: data }));
+                    }
+                });
+            }
+        });
+    });
+
     // WRITE
     app.post("/userdata-add", function(req, res) {
 

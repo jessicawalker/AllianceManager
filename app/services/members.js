@@ -38,7 +38,7 @@ var membersServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("members").find().project(projection).sort(sortByName).toArray(function(err, data) {
+                dbo.collection("members").find({ current_member: { $in: [true, false]}}).project(projection).sort(sortByName).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
