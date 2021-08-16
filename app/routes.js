@@ -30,7 +30,6 @@ function paginatedResults(model) {
         const date = req.query.date;
         const user = req.query.user;
         const sortByValue = req.query.sortBy;
-        console.log("req.query.sortBy: " + req.query.sortBy);
         let sortBy = { date: -1, _id: 1 }; // default value
         
         // filters
@@ -41,7 +40,7 @@ function paginatedResults(model) {
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
 
-//sort
+        //sort
         switch (sortByValue) {
             case "date":
                 sortBy = { date: -1, _id: 1 };
@@ -55,7 +54,6 @@ function paginatedResults(model) {
 
         // returned data
         const results = {};
-        //const sortBy = { sortByValue: -1, _id: 1 };
 
         if (endIndex < await model.countDocuments().exec()) {
             results.next = {
