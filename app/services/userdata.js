@@ -1,24 +1,17 @@
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
 
-const dbURL = process.env.DB_URI || "mongodb://localhost";
+const dbURL = process.env.DB_URI_BASE || "mongodb://localhost";
 
 // Service listeners
 // === ALL DB REFERENCES GO TO USERDATATEST - change to userdata when ready ===
 var userdataServices = function(app) {
 
-    // READ - no pagination
-    
+    // READ - no pagination    
     app.get("/userdata-filter", function(req, res) {
         var date = req.query.date;
         var dateFormatted =  new Date(req.query.date).toISOString();
-        //var search = (date === "") ? {} : { date: new Date(date).toISOString() };
         var search = (date === "") ? {} : { date: dateFormatted };
-        //var search = (date === "") ? {} : { date: date };
-
-        console.log(req.query.date);
-        console.log(dateFormatted);
-        console.log(search);
 
         MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
             if (err) {

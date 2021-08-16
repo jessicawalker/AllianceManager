@@ -1,7 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
 
-const dbURL = process.env.DB_URI || "mongodb://localhost";
+const dbURL = process.env.DB_URI_BASE || "mongodb://localhost";
 
 // Service listeners
 var criteriaServices = function(app) {

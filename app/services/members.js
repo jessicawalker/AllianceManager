@@ -1,34 +1,13 @@
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
 
-const dbURL = process.env.DB_URI || "mongodb://localhost";
+const dbURL = process.env.DB_URI_BASE || "mongodb://localhost";
 
 // Service listeners
 var membersServices = function(app) {
-
-    // READ
-    /*app.get("/members", function(req, res) {
-
-        MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
-            if (err) {
-                return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
-            } else {
-                var dbo = client.db("alliancemgr");
-
-                dbo.collection("members").find().toArray(function(err, data) {
-                    if (err) {
-                        client.close();
-                        return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
-                    } else {
-                        client.close();
-                        return res.status(200).send(JSON.stringify({ msg: "SUCCESS", members: data }));
-                    }
-                });
-            }
-        });
-    });*/
     
     app.get("/members-all", function(req, res) {
+
         const projection = { _id: 0, member_username: 1 };
         var sortByName = { member_username: 1 };
 

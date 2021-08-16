@@ -1,7 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
 
-const dbURL = process.env.DB_URI || "mongodb://localhost";
+const dbURL = process.env.DB_URI_BASE || "mongodb://localhost";
 
 // Service listeners
 var allianceServices = function(app) {
@@ -35,7 +35,6 @@ var allianceServices = function(app) {
 
     // UPDATE
     app.put("/allianceprofile-update/:id", function(req, res) {
-        console.log("Begin update");
         var allianceID = req.params.id;
         var alliance_name = req.body.alliance_name;
         var game_name = req.body.game_name;
