@@ -25,20 +25,34 @@ var routes = function (app) {
 
 function paginatedResults(model) {
     return async (req, res, next) => {
-        const origQuery = Object.values(req.query); // typeof is object
+        //const origQuery = Object.values(req.query); // typeof is object
+        //const origQuery = req.query; // typeof is object
 
-        const page = parseInt(origQuery.page);
-        const limit = parseInt(origQuery.limit);
-        const date = origQuery.date;
-        const user = origQuery.user;
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+        const date = req.query.date;
+        const user = req.query.user;
         //const filter = Object.values(newQuery.filter);
-        const sortByValue = origQuery.sortBy;
+        const sortByValue = req.query.sortBy;
         let sortBy = { date: -1, _id: 1 }; // default value
         
         // filters
         const searchDate = (date === "" || date === undefined) ? {} : { date: date };
         const searchUser = (user === "" || user === undefined) ? {} : { user: user };
         const searchCustom = (req.query.filter === "" || req.query.filter === undefined) ? {} : JSON.parse(req.query.filter);
+        /*console.log("req.query:");
+        console.log(req.query);
+        console.log(typeof req.query);
+        console.log("req.query.filter:");
+        console.log(req.query.date);
+        console.log("req.query.date:");
+        console.log(req.query.date);
+        console.log("req.query.user:");
+        console.log(req.query.user);
+        console.log(typeof req.query.user);
+        console.log("searchCustom:");
+        console.log(searchCustom);
+        console.log(typeof searchCustom);*/
 
         // [searchDate,  searchUser]
         // [{date: new Date},  { user: user }]
@@ -67,10 +81,12 @@ function paginatedResults(model) {
                 break;
         }
 
+
         // returned data
         const results = {};
+        const searchValues = { $and: [searchDate, searchUser, searchCustom] };
 
-        if (endIndex < await model.countDocuments().exec()) {
+        if (endIndex < await model.countDocuments(searchValues).exec()) {
             results.next = {
                 page: page + 1,
                 limit: limit
@@ -83,15 +99,15 @@ function paginatedResults(model) {
             };
         }
 
-        results.total = await model.countDocuments().exec();
 
         try {
             //results.results = await model.find().sort(sortBy).limit(limit).skip(startIndex).exec();
             //results.results = await model.find(searchUser).sort(sortBy).limit(limit).skip(startIndex).exec();
             //results.results = await model.find({ $and: [searchDate, searchUser, filter] }).limit(limit).skip(startIndex).exec();
 
-            results.results = await model.find({ $and: [searchDate, searchUser, searchCustom] }).sort(sortBy).limit(limit).skip(startIndex).exec();
+            results.results = await model.find(searchValues).sort(sortBy).limit(limit).skip(startIndex).exec();
             res.paginatedResults = results;
+            results.total = await model.countDocuments(searchValues).exec();
             next();
         } catch (e) {
             res.status(500).json({ message: e.message });
