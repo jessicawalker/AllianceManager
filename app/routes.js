@@ -25,14 +25,10 @@ var routes = function (app) {
 
 function paginatedResults(model) {
     return async (req, res, next) => {
-        //const origQuery = Object.values(req.query); // typeof is object
-        //const origQuery = req.query; // typeof is object
-
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
         const date = req.query.date;
         const user = req.query.user;
-        //const filter = Object.values(newQuery.filter);
         const sortByValue = req.query.sortBy;
         let sortBy = { date: -1, _id: 1 }; // default value
         
@@ -40,30 +36,6 @@ function paginatedResults(model) {
         const searchDate = (date === "" || date === undefined) ? {} : { date: date };
         const searchUser = (user === "" || user === undefined) ? {} : { user: user };
         const searchCustom = (req.query.filter === "" || req.query.filter === undefined) ? {} : JSON.parse(req.query.filter);
-        /*console.log("req.query:");
-        console.log(req.query);
-        console.log(typeof req.query);
-        console.log("req.query.filter:");
-        console.log(req.query.date);
-        console.log("req.query.date:");
-        console.log(req.query.date);
-        console.log("req.query.user:");
-        console.log(req.query.user);
-        console.log(typeof req.query.user);
-        console.log("searchCustom:");
-        console.log(searchCustom);
-        console.log(typeof searchCustom);*/
-
-        // [searchDate,  searchUser]
-        // [{date: new Date},  { user: user }]
-        // [{claimedSSWar: true},  { activeDeclare: false }]
-        // [searchDate,  searchUser, ??????]
-        // [searchDate,  searchUser, filter]
-        // [{date: new Date}, { user: user }, { claimedSSWar: true }, { activeDeclare: false }]
-        // search = [searchDate, searchUser, ??????]
-        // search.append(searchDate)
-        // search.append(searchUser)
-        // search.append(filter)   ===> [{claimedSSWar: true},  { activeDeclare: false }] *************
 
         // pagination
         const startIndex = (page - 1) * limit;
@@ -101,10 +73,6 @@ function paginatedResults(model) {
 
 
         try {
-            //results.results = await model.find().sort(sortBy).limit(limit).skip(startIndex).exec();
-            //results.results = await model.find(searchUser).sort(sortBy).limit(limit).skip(startIndex).exec();
-            //results.results = await model.find({ $and: [searchDate, searchUser, filter] }).limit(limit).skip(startIndex).exec();
-
             results.results = await model.find(searchValues).sort(sortBy).limit(limit).skip(startIndex).exec();
             res.paginatedResults = results;
             results.total = await model.countDocuments(searchValues).exec();
