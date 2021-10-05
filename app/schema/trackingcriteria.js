@@ -8,6 +8,10 @@ const criteriaSchema = new mongoose.Schema({
     criteria_datatype: {
         type: String,
         required: true
+    },
+    activity_name: {
+        type: String,
+        required: true
     }
 });
 

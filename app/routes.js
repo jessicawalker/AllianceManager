@@ -1,9 +1,10 @@
 const express = require('express');
+const Activity = require('./schema/activities');
 const AllianceProfile = require('./schema/allianceprofile');
 const Members = require('./schema/members');
 const TrackingCriteria = require('./schema/trackingcriteria');
 const Userdata = require('./schema/userdata');
-
+// TODO - take non-userdata out of the pagination results function, just regular get
 // Router listeners
 var routes = function (app) {
     app.get('/allianceprofile', paginatedResults(AllianceProfile), (req, res) => {
@@ -15,6 +16,12 @@ var routes = function (app) {
     app.get('/trackingcriteria', paginatedResults(TrackingCriteria), (req, res) => {
         res.json(res.paginatedResults);
     });
+    app.get('/activities', paginatedResults(Activity), (req, res) => {
+        res.json(res.paginatedResults);
+    });
+    /*app.get('/activities', uniqueResults(TrackingCriteria), (req, res) => {
+        res.json(res.uniqueResults);
+    });*/
     app.get('/userdata', paginatedResults(Userdata), (req, res) => {
         res.json(res.paginatedResults);
     });
@@ -90,11 +97,13 @@ function uniqueResults(model) {
     return async (req, res, next) => {
         const unique = req.query.unique;
         const results = {};
+        console.log(req.query.unique);
 
         try {
             if (unique !== "user" && unique !== undefined) {
                 results.results = await model.distinct(unique).exec();
                 res.uniqueResults = results;
+                console.log(results);
             }
             next();
         } catch (e) {
