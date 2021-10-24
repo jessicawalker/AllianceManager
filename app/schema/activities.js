@@ -7,7 +7,7 @@ const activitySchema = new mongoose.Schema({
     },
     log_type: {
         type: String,
-        required: false
+        required: true
     }
 });
 
