@@ -37,6 +37,7 @@ function paginatedResults(model) {
         const date = req.query.date;
         const user = req.query.user;
         const sortByValue = req.query.sortBy;
+        const sortByReverse = req.query.sortByReverse;
         let sortBy = { date: -1, _id: 1 }; // default value
         
         // filters
@@ -51,10 +52,12 @@ function paginatedResults(model) {
         //sort
         switch (sortByValue) {
             case "date":
-                sortBy = { date: -1, _id: 1 };
+                sortBy = sortByReverse ? { date: 1, _id: 1 } : { date: -1, _id: 1 };
+                //sortBy = { date: -1, _id: 1 };
                 break;
             case "user":
-                sortBy = { user: 1, date: -1 };
+                sortBy = sortByReverse ? { user: -1, date: -1 } : { user: 1, date: -1 };
+                //sortBy = { user: 1, date: -1 };
                 break;
             default:
                 break;
