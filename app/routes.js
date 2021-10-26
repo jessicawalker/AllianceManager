@@ -34,6 +34,7 @@ function paginatedResults(model) {
     return async (req, res, next) => {
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
+        const activity = req.query.activity;
         const date = req.query.date;
         const user = req.query.user;
         const sortByValue = req.query.sortBy;
@@ -41,6 +42,7 @@ function paginatedResults(model) {
         let sortBy = { date: -1, _id: 1 }; // default value
         
         // filters
+        const searchLog = (activity === "" || activity === undefined) ? {} : { activity: activity };
         const searchDate = (date === "" || date === undefined) ? {} : { date: date };
         const searchUser = (user === "" || user === undefined) ? {} : { user: user };
         const searchCustom = (req.query.filter === "" || req.query.filter === undefined) ? {} : JSON.parse(req.query.filter);
@@ -66,7 +68,7 @@ function paginatedResults(model) {
 
         // returned data
         const results = {};
-        const searchValues = { $and: [searchDate, searchUser, searchCustom] };
+        const searchValues = { $and: [searchLog, searchDate, searchUser, searchCustom] };
 
         if (endIndex < await model.countDocuments(searchValues).exec()) {
             results.next = {
@@ -99,14 +101,24 @@ function paginatedResults(model) {
 function uniqueResults(model) {
     return async (req, res, next) => {
         const unique = req.query.unique;
+        const activity_name = req.query.activity_name;
+        const search = { activity: activity_name };
         const results = {};
+        console.log("req.query.unique");
         console.log(req.query.unique);
+        console.log("==================================");
+        console.log("req.query.activity_name");
+        console.log(req.query.activity_name);
+        console.log("==================================");
 
         try {
-            if (unique !== "user" && unique !== undefined) {
+            if (unique !== "activity" && unique !== "user" && unique !== undefined) {
+                //results.results = await model.distinct(unique, search).exec();
                 results.results = await model.distinct(unique).exec();
                 res.uniqueResults = results;
-                console.log(results);
+                //console.log("results");
+                //console.log(results);
+                //console.log("==================================");
             }
             next();
         } catch (e) {
