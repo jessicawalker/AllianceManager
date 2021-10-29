@@ -43,9 +43,26 @@ function paginatedResults(model) {
         
         // filters
         const searchLog = (activity === "" || activity === undefined) ? {} : { activity: activity };
-        const searchDate = (date === "" || date === undefined) ? {} : { date: date };
+        const searchDate = (date === "" || date === undefined) ? {} : { date: new Date(date) };
         const searchUser = (user === "" || user === undefined) ? {} : { user: user };
-        const searchCustom = (req.query.filter === "" || req.query.filter === undefined) ? {} : JSON.parse(req.query.filter);
+        //const searchCustom = (req.query.filter === "" || req.query.filter === undefined) ? {} : JSON.parse(req.query.filter);
+/*
+        console.log("=====================");
+        console.log("searchLog");
+        console.log(searchLog);
+        console.log("=====================");
+        console.log("searchDate");
+        console.log(searchDate);
+        console.log("=====================");
+        console.log("searchUser");
+        console.log(searchUser);
+        console.log("=====================");
+        console.log("sortByValue");
+        console.log(sortByValue);
+        console.log("=====================");
+        console.log("sortByReverse");
+        console.log(sortByReverse);
+        console.log("=====================");*/
 
         // pagination
         const startIndex = (page - 1) * limit;
@@ -54,21 +71,35 @@ function paginatedResults(model) {
         //sort
         switch (sortByValue) {
             case "date":
-                sortBy = sortByReverse ? { date: 1, _id: 1 } : { date: -1, _id: 1 };
-                //sortBy = { date: -1, _id: 1 };
+                /*if (sortByReverse) {
+                    sortBy = { date: 1, _id: 1 }
+                }
+                else {
+                    sortBy = { date: -1, _id: 1 }
+                }*/
+                //sortBy = { date: sortByReverse, _id: 1 };
+                //sortBy = sortByReverse ? { date: 1, _id: 1 } : { date: -1, _id: 1 };
+                sortBy = { date: -1, _id: 1 };
                 break;
             case "user":
-                sortBy = sortByReverse ? { user: -1, date: -1 } : { user: 1, date: -1 };
-                //sortBy = { user: 1, date: -1 };
+                /*if (sortByReverse) {
+                    sortBy = { user: -1, date: -1 }
+                }
+                else {
+                    sortBy = { user: 1, date: -1 }
+                }*/
+                //sortBy = sortByReverse ? { user: -1, date: -1 } : { user: 1, date: -1 };
+                //sortBy = { user: sortByReverse, date: -1 };
+                sortBy = { user: 1, date: -1 };
                 break;
             default:
+                sortBy = { date: -1, _id: 1 };
                 break;
         }
 
-
         // returned data
         const results = {};
-        const searchValues = { $and: [searchLog, searchDate, searchUser, searchCustom] };
+        const searchValues = { $and: [searchLog, searchDate, searchUser] };
 
         if (endIndex < await model.countDocuments(searchValues).exec()) {
             results.next = {
@@ -94,6 +125,8 @@ function paginatedResults(model) {
         }
 
         //console.log(res);
+        var timestamp = new Date(Date.now());
+        console.log("Time: " + timestamp.toUTCString());
     };
 }
 
@@ -114,7 +147,7 @@ function uniqueResults(model) {
         try {
             if (unique !== "activity" && unique !== "user" && unique !== undefined) {
                 //results.results = await model.distinct(unique, search).exec();
-                results.results = await model.distinct(unique).exec();
+                results.results = await model.distinct(unique, search).exec();
                 res.uniqueResults = results;
                 //console.log("results");
                 //console.log(results);
