@@ -19,7 +19,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdatatest").find(search).toArray(function(err, data) {
+                dbo.collection("userdata").find(search).toArray(function(err, data) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -43,7 +43,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
                 
-                dbo.collection("userdatatest").insertOne(newUserdataEntry, function(err, response) {
+                dbo.collection("userdata").insertOne(newUserdataEntry, function(err, response) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
@@ -69,7 +69,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdatatest").deleteOne(search, function(err, response) {
+                dbo.collection("userdata").deleteOne(search, function(err, response) {
                     if (err) {
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
                     } else {
@@ -99,7 +99,7 @@ var userdataServices = function(app) {
             } else {
                 var dbo = client.db("alliancemgr");
 
-                dbo.collection("userdatatest").updateOne(search, updateData, function(err, response) {
+                dbo.collection("userdata").updateOne(search, updateData, function(err, response) {
                     if (err) {
                         client.close();
                         return res.status(200).send(JSON.stringify({ msg: "Error: " + err }));
